@@ -1,11 +1,11 @@
 # Amazon's Selling Partner API (SP-API) Golang SDK
 
-[![Go Reference](https://pkg.go.dev/badge/gopkg.me/selling-partner-api-sdk.svg)](https://pkg.go.dev/gopkg.me/selling-partner-api-sdk)
+[![Go Reference](https://pkg.go.dev/badge/github.com/icowan/selling-partner-api-sdk.svg)](https://pkg.go.dev/github.com/icowan/selling-partner-api-sdk)
 
 ## Installation
 
 ~~~~
-go get -u gopkg.me/selling-partner-api-sdk
+go get -u github.com/icowan/selling-partner-api-sdk
 ~~~~
 
 ## Progress
@@ -43,8 +43,8 @@ import (
 	"net/http"
 	"net/http/httputil"
 	
-	sp "gopkg.me/selling-partner-api-sdk/pkg/selling-partner"
-	"gopkg.me/selling-partner-api-sdk/sellers"
+	sp "github.com/icowan/selling-partner-api-sdk/pkg/selling-partner"
+	"github.com/icowan/selling-partner-api-sdk/sellers"
 
 	"github.com/google/uuid"
 	"github.com/pkg/errors"

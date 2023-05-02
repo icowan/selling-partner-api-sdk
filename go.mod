@@ -1,4 +1,4 @@
-module gopkg.me/selling-partner-api-sdk
+module github.com/icowan/selling-partner-api-sdk
 
 go 1.16
 

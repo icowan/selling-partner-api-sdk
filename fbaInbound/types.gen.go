@@ -6,7 +6,7 @@ package fbaInbound
 import (
 	"time"
 
-	openapi_types "gopkg.me/selling-partner-api-sdk/pkg/types"
+	openapi_types "github.com/icowan/selling-partner-api-sdk/pkg/types"
 )
 
 // ASINInboundGuidance defines model for ASINInboundGuidance.
@@ -549,8 +549,8 @@ type InboundShipmentItem struct {
 	QuantityReceived *Quantity `json:"QuantityReceived,omitempty"`
 
 	// The item quantity.
-	QuantityShipped Quantity        `json:"QuantityShipped"`
-	ReleaseDate     *string `json:"ReleaseDate,omitempty"`
+	QuantityShipped Quantity `json:"QuantityShipped"`
+	ReleaseDate     *string  `json:"ReleaseDate,omitempty"`
 
 	// The seller SKU of the item.
 	SellerSKU string `json:"SellerSKU"`
