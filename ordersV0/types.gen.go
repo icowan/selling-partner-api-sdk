@@ -614,3 +614,31 @@ type GetOrderItemsBuyerInfoParams struct {
 	// A string token returned in the response of your previous request.
 	NextToken *string `json:"NextToken,omitempty"`
 }
+
+type PackageDetailParams struct {
+	// A seller-supplied identifier that uniquely identifies a package within the scope of an order. Only positive numeric values are supported.
+	PackageReferenceId string `json:"packageReferenceId"`
+	// Identifies the carrier that will deliver the package. This field is required for all marketplaces, see reference.
+	CarrierCode string `json:"carrierCode"`
+	// Carrier Name that will deliver the package. Required when carrierCode is "Others"
+	CarrierName string `json:"carrierName"`
+	// Ship method to be used for shipping the order.
+	ShippingMethod string `json:"shippingMethod"`
+	// The tracking number used to obtain tracking and delivery information.
+	TrackingNumber string `json:"trackingNumber"`
+	// The shipping date for the package. Must be in ISO-8601 date/time format.
+	ShipDate string `json:"shipDate"`
+	// The unique identifier of the supply source.
+	ShipFromSupplySourceId string `json:"shipFromSupplySourceId"`
+	// The list of order items and quantities to be updated.
+	OrderItems []ConfirmShipmentOrderItemParams `json:"orderItems"`
+}
+
+type ConfirmShipmentOrderItemParams struct {
+	// The unique identifier of the order item.
+	OrderItemId string `json:"orderItemId"`
+	// The quantity of the item.
+	Quantity int `json:"quantity"`
+	// The list of transparency codes.
+	TransparencyCodes []string `json:"transparencyCodes"`
+}

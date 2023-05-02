@@ -54,6 +54,36 @@ type Client struct {
 	UserAgent string
 }
 
+func (c *Client) ShipmentConfirmation(ctx context.Context, orderId string, params *PackageDetailParams) (*http.Response, error) {
+	req, err := NewShipmentConfirmationRequest(c.Endpoint, orderId)
+
+	if err != nil {
+		return nil, err
+	}
+
+	req = req.WithContext(ctx)
+	req.Header.Set("User-Agent", c.UserAgent)
+	if c.RequestBefore != nil {
+		err = c.RequestBefore(ctx, req)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	rsp, err := c.Client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if c.ResponseAfter != nil {
+		err = c.ResponseAfter(ctx, rsp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return rsp, nil
+}
+
 // ClientOption allows setting custom parameters during construction
 type ClientOption func(*Client) error
 
@@ -139,6 +169,9 @@ type ClientInterface interface {
 
 	// GetOrderItemsBuyerInfo request
 	GetOrderItemsBuyerInfo(ctx context.Context, orderId string, params *GetOrderItemsBuyerInfoParams) (*http.Response, error)
+
+	// Updates the shipment confirmation status for a specified order.
+	ShipmentConfirmation(ctx context.Context, orderId string, params *PackageDetailParams) (*http.Response, error)
 }
 
 func (c *Client) GetOrders(ctx context.Context, params *GetOrdersParams) (*http.Response, error) {
@@ -566,6 +599,39 @@ func NewGetOrdersRequest(endpoint string, params *GetOrdersParams) (*http.Reques
 	return req, nil
 }
 
+func NewShipmentConfirmationRequest(endpoint string, orderId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParam("simple", false, "orderId", orderId)
+	if err != nil {
+		return nil, err
+	}
+
+	queryUrl, err := url.Parse(endpoint)
+	if err != nil {
+		return nil, err
+	}
+
+	basePath := fmt.Sprintf("/orders/v0/orders/%s/shipments/confirm", pathParam0)
+	if basePath[0] == '/' {
+		basePath = basePath[1:]
+	}
+
+	queryUrl, err = queryUrl.Parse(basePath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryUrl.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewGetOrderRequest generates requests for GetOrder
 func NewGetOrderRequest(endpoint string, orderId string) (*http.Request, error) {
 	var err error
@@ -582,7 +648,7 @@ func NewGetOrderRequest(endpoint string, orderId string) (*http.Request, error) 
 		return nil, err
 	}
 
-	basePath := fmt.Sprintf("/orders/v0/orders/%s", pathParam0)
+	basePath := fmt.Sprintf("/orders/v0/orders/%s/shipmentConfirmation", pathParam0)
 	if basePath[0] == '/' {
 		basePath = basePath[1:]
 	}
@@ -592,7 +658,7 @@ func NewGetOrderRequest(endpoint string, orderId string) (*http.Request, error) 
 		return nil, err
 	}
 
-	req, err := http.NewRequest("GET", queryUrl.String(), nil)
+	req, err := http.NewRequest(http.MethodPost, queryUrl.String(), nil)
 	if err != nil {
 		return nil, err
 	}
